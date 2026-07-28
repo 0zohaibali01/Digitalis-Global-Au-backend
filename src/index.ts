@@ -32,6 +32,12 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/contact', contactRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Export app for Vercel serverless execution
+export default app;
+
+// Only start local listener when running outside production
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
