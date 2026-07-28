@@ -65,7 +65,7 @@ export const handleContactSubmit = async (req: Request, res: Response) => {
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ success: false, errors: error.errors });
+      return res.status(400).json({ success: false, errors: error.issues });
     }
     console.error('Submission Error:', error);
     return res.status(500).json({ success: false, message: 'Server error saving submission.' });
