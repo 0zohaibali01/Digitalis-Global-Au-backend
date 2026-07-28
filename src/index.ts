@@ -14,7 +14,14 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (mobile apps, curl, server-to-server)
+      if (!origin) return callback(null, true);
+
+      // Check fixed origins OR any Vercel deployment URL (.vercel.app)
+      const isAllowed =
+        allowedOrigins.includes(origin) || origin.endsWith('.vercel.app');
+
+      if (isAllowed) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
@@ -32,10 +39,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/contact', contactRoutes);
 
-// Export app for Vercel serverless execution
 export default app;
 
-// Only start local listener when running outside production
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
