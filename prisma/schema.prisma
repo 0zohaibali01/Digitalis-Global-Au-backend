@@ -16,3 +16,33 @@ model ContactSubmission {
   message   String
   createdAt DateTime @default(now())
 }
+
+model CaseStudy {
+  id          String   @id @default(cuid())
+
+  slug        String   @unique
+  client      String
+  industry    String
+  metric      String
+  roi         String?
+
+  summary     String
+  headline    String?
+  challenge   String?
+
+  /// ["Refined the Shopify buying journey...", ...]
+  approach    Json     @default("[]")
+  /// [["7x+", "ROAS on paid media"], ...]
+  results     Json     @default("[]")
+  /// ["Shopify development", ...]
+  services    Json     @default("[]")
+
+  /// sortOrder = 0 gets the dark "featured" card. Keep exactly one row at 0.
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, sortOrder])
+}

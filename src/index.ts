@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import contactRoutes from './routes/contactRoutes.js';
+import caseStudyRoutes from './routes/caseStudyRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -38,6 +39,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/contact', contactRoutes);
+app.use('/api/v1/case-studies', caseStudyRoutes);
 
 export default app;
 
